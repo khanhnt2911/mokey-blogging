@@ -1,15 +1,20 @@
+import { Loading } from "components/loading";
 import React from "react";
 import styled from "styled-components";
 
 const ButtonStyled = styled.button`
   cursor: pointer;
-  padding: 20px;
+  padding: 0 25px;
   line-height: 1;
   color: white;
   border-radius: 8px;
   font-weight: bold;
   font-size: 18px;
   width: 100%;
+  height: ${(props) => props.height || "66px"};
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-image: linear-gradient(
     to right bottom,
     ${(props) => props.theme.primary},
@@ -26,11 +31,14 @@ const Button = (props) => {
     className = "",
     onClick = () => {},
     children,
+    isLoading,
     ...rest
   } = props;
+  const child = !!isLoading ? <Loading /> : children; //Convert string to boolean
+
   return (
-    <ButtonStyled className={className} onClick={onClick} {...rest}>
-      {children}
+    <ButtonStyled type={type} className={className} onClick={onClick} {...rest}>
+      {child}
     </ButtonStyled>
   );
 };

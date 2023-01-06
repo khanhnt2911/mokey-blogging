@@ -1,6 +1,9 @@
+import { Button } from "components/button";
+import { Field } from "components/field";
+import { IconEyeClose, IconEyeOpen } from "components/icon";
 import { Input } from "components/input";
 import { Label } from "components/label";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
@@ -10,19 +13,16 @@ const SignUpPageStyles = styled.div`
   .logo {
     margin: 0 auto 20px;
   }
+  .form {
+    width: 600px;
+    margin: 0 auto;
+  }
   .heading {
     text-align: center;
     color: ${(props) => props.theme.primary};
     font-weight: bold;
     font-size: 40px;
     margin-bottom: 60px;
-  }
-  .field {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    row-gap: 10px;
-    margin-top: 20px;
   }
   .label {
     display: inline-block;
@@ -33,6 +33,7 @@ const SignUpPageStyles = styled.div`
 `;
 
 const SignUpPage = () => {
+  const [togglePassword, setTogglePassword] = useState(false);
   const {
     control,
     handleSubmit,
@@ -47,19 +48,60 @@ const SignUpPage = () => {
   return (
     <SignUpPageStyles>
       <div className="container">
-        <img srcSet="logo.png 2x" alt="monkey-blogging" className="logo" />
+        <img srcSet="/logo.png 2x" alt="monkey-blogging" className="logo" />
         <h1 className="heading">Monkey Blogging</h1>
-        <form onSubmit={handleSubmit(handleSignUp)} className="form">
-          <div className="field">
+        <form
+          onSubmit={handleSubmit(handleSignUp)}
+          autoComplete="off"
+          className="form"
+        >
+          <Field className="field">
             <Label htmlFor="fullName">Full name</Label>
             <Input
               type="text"
-              id="fullName"
+              name="fullName"
               placeholder="Enter your fullname"
               control={control}
-              hasIcon
             />
-          </div>
+          </Field>
+          <Field className="field">
+            <Label htmlFor="account">Email address</Label>
+            <Input
+              type="email"
+              name="email address"
+              placeholder="Enter your email"
+              control={control}
+            />
+          </Field>
+          <Field className="field">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              type={togglePassword ? "text" : "password"}
+              name="password"
+              placeholder="Enter your password"
+              control={control}
+              hasIcon
+            >
+              {togglePassword ? (
+                <IconEyeOpen
+                  className="input-icon"
+                  onClick={() => {
+                    setTogglePassword(!togglePassword);
+                  }}
+                ></IconEyeOpen>
+              ) : (
+                <IconEyeClose
+                  className="input-icon"
+                  onClick={() => {
+                    setTogglePassword(!togglePassword);
+                  }}
+                ></IconEyeClose>
+              )}
+            </Input>
+          </Field>
+          <Button type="submit" disabled>
+            Sign up
+          </Button>
         </form>
       </div>
     </SignUpPageStyles>

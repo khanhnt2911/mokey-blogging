@@ -1,3 +1,4 @@
+import { IconEyeOpen } from "components/icon";
 import React from "react";
 import { useController } from "react-hook-form";
 import styled from "styled-components";
@@ -8,6 +9,7 @@ const InputStyles = styled.div`
   input {
     width: 100%;
     padding: 20px;
+    padding-right: 50px;
     background-color: ${(props) => props.theme.grayLight};
     border-radius: 8px;
     font-weight: 500;
@@ -33,7 +35,14 @@ const InputStyles = styled.div`
   }
 `;
 
-const Input = ({ name, type, control, hasIcon = false, ...props }) => {
+const Input = ({
+  name,
+  type,
+  children,
+  control,
+  hasIcon = false,
+  ...props
+}) => {
   const { field } = useController({
     control,
     name,
@@ -43,6 +52,7 @@ const Input = ({ name, type, control, hasIcon = false, ...props }) => {
   return (
     <InputStyles hasIcon={hasIcon}>
       <input type={type} id={name} {...field} {...props} />
+      {hasIcon ? children : ""}
     </InputStyles>
   );
 };

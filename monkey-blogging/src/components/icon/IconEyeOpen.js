@@ -1,8 +1,9 @@
 import React from "react";
 
-const IconEyeOpen = () => {
+const IconEyeOpen = (props) => {
+  const { className = "", onClick = () => {} } = props;
   return (
-    <span>
+    <span className={className} onClick={onClick}>
       <svg
         width="22"
         height="14"

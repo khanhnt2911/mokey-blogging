@@ -3,9 +3,14 @@ import { Field } from "components/field";
 import { IconEyeClose, IconEyeOpen } from "components/icon";
 import { Input } from "components/input";
 import { Label } from "components/label";
-import React, { useState } from "react";
+import { Loading } from "components/loading";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { toast } from "react-toastify";
 
 const SignUpPageStyles = styled.div`
   min-height: 100vh;
@@ -32,6 +37,18 @@ const SignUpPageStyles = styled.div`
   }
 `;
 
+const schema = yup.object({
+  fullname: yup.string().required("Enter your fullname"),
+  email: yup
+    .string()
+    .email("Please enter valid email")
+    .required("Enter your email address"),
+  password: yup
+    .string()
+    .min(8, "Your password must be 8 character")
+    .required("Enter your password"),
+});
+
 const SignUpPage = () => {
   const [togglePassword, setTogglePassword] = useState(false);
   const {
@@ -39,10 +56,37 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
     watch,
-  } = useForm({});
+    reset,
+  } = useForm({
+    mode: "onChange",
+    resolver: yupResolver(schema),
+  });
+
+  useEffect(() => {
+    const arrErrors = Object.values(errors);
+    const lengthArrErrors = Object.values(errors).length;
+
+    if (lengthArrErrors > 0) {
+      toast.error(arrErrors[0]?.message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }, [errors]);
 
   const handleSignUp = (values) => {
-    console.log("logger");
+    if (!isValid) return;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 5000);
+    });
   };
 
   return (
@@ -59,7 +103,7 @@ const SignUpPage = () => {
             <Label htmlFor="fullName">Full name</Label>
             <Input
               type="text"
-              name="fullName"
+              name="fullname"
               placeholder="Enter your fullname"
               control={control}
             />
@@ -68,7 +112,7 @@ const SignUpPage = () => {
             <Label htmlFor="account">Email address</Label>
             <Input
               type="email"
-              name="email address"
+              name="email"
               placeholder="Enter your email"
               control={control}
             />
@@ -99,7 +143,15 @@ const SignUpPage = () => {
               )}
             </Input>
           </Field>
-          <Button type="submit" disabled>
+          <Button
+            type="submit"
+            style={{
+              maxWidth: "350px",
+              margin: "0 auto",
+            }}
+            isLoading={isSubmitting}
+            disabled={isSubmitting}
+          >
             Sign up
           </Button>
         </form>

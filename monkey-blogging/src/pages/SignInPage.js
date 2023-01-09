@@ -5,32 +5,58 @@ import { Input } from "components/input";
 import { Label } from "components/label";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
+import styled from "styled-components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { toast } from "react-toastify";
-
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db } from "firebase-app/firebase-app";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "firebase-app/firebase-app";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection } from "firebase/firestore";
+import { toast } from "react-toastify";
+import { useAuth } from "contexts/auth-context";
 import Authentication from "./Authentication";
 
+const SignInStyled = styled.div`
+  min-height: 100vh;
+  padding: 40px;
+  .logo {
+    margin: 0 auto 20px;
+  }
+  .form {
+    width: 600px;
+    margin: 0 auto;
+  }
+  .heading {
+    text-align: center;
+    color: ${(props) => props.theme.primary};
+    font-weight: bold;
+    font-size: 40px;
+    margin-bottom: 60px;
+  }
+  .label {
+    display: inline-block;
+    color: ${(props) => props.theme.grayDark};
+    font-weight: 600;
+    cursor: pointer;
+  }
+`;
+
 const schema = yup.object({
-  fullname: yup.string().required("Enter your fullname"),
   email: yup
     .string()
-    .email("Please enter valid email")
-    .required("Enter your email address"),
+    .email("Enter type email")
+    .required("Please enter your email"),
   password: yup
     .string()
-    .min(8, "Your password must be 8 character")
-    .required("Enter your password"),
+    .min(8, "Password must be 8 character")
+    .required("Please enter your password"),
 });
 
-const SignUpPage = () => {
+const SignInPage = () => {
   const [togglePassword, setTogglePassword] = useState(false);
   const navigate = useNavigate();
+  const { userInfo } = useAuth();
+
+  console.log(userInfo);
 
   const {
     control,
@@ -59,16 +85,11 @@ const SignUpPage = () => {
     }
   }, [errors]);
 
-  const handleSignUp = async (values) => {
+  const handleSignIn = async (values) => {
     if (!isValid) return;
-
-    await createUserWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        updateProfile(auth.currentUser, {
-          displayName: user.displayName,
-        });
-        toast.success("Create success !!!", {
+    await signInWithEmailAndPassword(auth, values.email, values.password)
+      .then(() => {
+        toast.success("Sign-up success!!!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -78,20 +99,10 @@ const SignUpPage = () => {
           progress: undefined,
           theme: "light",
         });
-
-        const colRef = collection(db, "users");
-
-        addDoc(colRef, {
-          fullname: values.fullname,
-          email: values.email,
-          password: values.password,
-        });
         navigate("/");
       })
       .catch((error) => {
-        const errorMessage = error.code;
-
-        toast.error(errorMessage, {
+        toast.error(error.code, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -106,27 +117,14 @@ const SignUpPage = () => {
 
   return (
     <Authentication>
-      <form
-        onSubmit={handleSubmit(handleSignUp)}
-        autoComplete="off"
-        className="form"
-      >
+      <form className="form" onSubmit={handleSubmit(handleSignIn)}>
         <Field className="field">
-          <Label htmlFor="fullName">Full name</Label>
-          <Input
-            type="text"
-            name="fullname"
-            placeholder="Enter your fullname"
-            control={control}
-          />
-        </Field>
-        <Field className="field">
-          <Label htmlFor="account">Email address</Label>
+          <Label htmlFor="email">Email address</Label>
           <Input
             type="email"
             name="email"
-            placeholder="Enter your email"
             control={control}
+            placeholder="Enter your email"
           />
         </Field>
         <Field className="field">
@@ -134,8 +132,8 @@ const SignUpPage = () => {
           <Input
             type={togglePassword ? "text" : "password"}
             name="password"
-            placeholder="Enter your password"
             control={control}
+            placeholder="Enter your password"
             hasIcon
           >
             {togglePassword ? (
@@ -164,11 +162,11 @@ const SignUpPage = () => {
           isLoading={isSubmitting}
           disabled={isSubmitting}
         >
-          Sign up
+          Sign in
         </Button>
       </form>
     </Authentication>
   );
 };
 
-export default SignUpPage;
+export default SignInPage;

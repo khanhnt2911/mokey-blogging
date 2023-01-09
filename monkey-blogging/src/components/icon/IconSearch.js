@@ -17,19 +17,19 @@ const IconSearch = () => {
             rx="6.66669"
             ry="6.05161"
             stroke="#999999"
-            stroke-width="1.5"
+            strokeWidth="1.5"
           />
           <path
             d="M17.0001 15.5237L15.2223 13.9099L14.3334 13.103L12.5557 11.4893"
             stroke="#999999"
-            stroke-width="1.5"
-            stroke-linecap="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
           />
           <path
             d="M11.6665 12.2964C12.9671 12.1544 13.3706 11.8067 13.4443 10.6826"
             stroke="#999999"
-            stroke-width="1.5"
-            stroke-linecap="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
           />
         </svg>
       </span>

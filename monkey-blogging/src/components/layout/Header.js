@@ -1,5 +1,6 @@
 import { Button } from "components/button";
 import { IconSearch } from "components/icon";
+import { useAuth } from "contexts/auth-context";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
@@ -51,6 +52,7 @@ const HeaderStyle = styled.div`
     display: flex;
     align-items: center;
     position: relative;
+    margin-right: 20px;
   }
   .search-input {
     flex: 1;
@@ -63,12 +65,18 @@ const HeaderStyle = styled.div`
     right: 5%;
     transform: translateY(-50%);
   }
-  .header-button {
-    margin-left: 20px;
-  }
 `;
 
 const Header = () => {
+  const { userInfo } = useAuth();
+
+  const getLastName = (name) => {
+    if (!name) return "User";
+
+    const length = name.split(" ");
+    return length[length.length - 1];
+  };
+
   return (
     <HeaderStyle>
       <div className="container">
@@ -77,7 +85,7 @@ const Header = () => {
             <img className="logo" srcSet="logo.png 2x" alt="monkey-blogging" />
           </NavLink>
           <ul className="menu">
-            {menuLink.map((item, index) => {
+            {menuLink.map((item) => {
               return (
                 <li className="menu-item" key={item.title}>
                   <NavLink to={item.url}>{item.title}</NavLink>
@@ -95,13 +103,22 @@ const Header = () => {
               <IconSearch></IconSearch>
             </span>
           </div>
-          <Button
-            className="header-button"
-            style={{ maxWidth: "200px", height: "46px" }}
-          >
-            {" "}
-            Sign up
-          </Button>
+          {!userInfo ? (
+            <Button
+              type="button"
+              to="/sign-in"
+              className="header-button"
+              style={{ height: "46px" }}
+            >
+              {" "}
+              Sign up
+            </Button>
+          ) : (
+            <div className="header-auth">
+              <span>Welcome back, </span>
+              <strong>{getLastName(userInfo?.displayName)}</strong>
+            </div>
+          )}
         </div>
       </div>
     </HeaderStyle>

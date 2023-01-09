@@ -70,7 +70,7 @@ const SignUpPage = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         updateProfile(auth.currentUser, {
-          displayName: user.displayName,
+          displayName: values.fullname,
         });
         toast.success("Create success !!!", {
           position: "top-right",
@@ -90,7 +90,7 @@ const SignUpPage = () => {
           email: values.email,
           password: values.password,
         });
-        navigate("/");
+        navigate("/sign-in");
       })
       .catch((error) => {
         const errorMessage = error.code;

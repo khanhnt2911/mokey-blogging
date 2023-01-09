@@ -55,7 +55,6 @@ const SignInPage = () => {
   const [togglePassword, setTogglePassword] = useState(false);
   const navigate = useNavigate();
   const { userInfo } = useAuth();
-  console.log(userInfo);
   const {
     control,
     handleSubmit,
@@ -138,7 +137,8 @@ const SignInPage = () => {
           </Input>
         </Field>
         <div className="have-account">
-          You had not an account ? <NavLink to={"/sign-up"}>Sign up</NavLink>{" "}
+          You had not an account ?{" "}
+          <NavLink to={"/sign-up"}>Register an account</NavLink>{" "}
         </div>
         <Button
           type="submit"

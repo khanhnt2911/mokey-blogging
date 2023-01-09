@@ -24,6 +24,14 @@ const AuthenticationStyled = styled.div`
     font-weight: 600;
     cursor: pointer;
   }
+  .have-account {
+    margin-bottom: 20px;
+    &: {
+      display: inline-block;
+      color: ${(props) => props.theme.primary};
+      font-weight: 500;
+    }
+  }
 `;
 
 const Authentication = ({ children }) => {

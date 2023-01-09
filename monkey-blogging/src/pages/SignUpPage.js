@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db } from "firebase-app/firebase-app";
-import { useNavigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import Authentication from "./Authentication";
 
@@ -58,6 +58,10 @@ const SignUpPage = () => {
       });
     }
   }, [errors]);
+
+  useEffect(() => {
+    document.title = "Sign up page";
+  }, []);
 
   const handleSignUp = async (values) => {
     if (!isValid) return;
@@ -155,6 +159,9 @@ const SignUpPage = () => {
             )}
           </Input>
         </Field>
+        <div className="have-account">
+          Do you have an account ? <NavLink to={"/sign-in"}>Sign in</NavLink>{" "}
+        </div>
         <Button
           type="submit"
           style={{

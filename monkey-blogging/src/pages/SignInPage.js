@@ -10,7 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "firebase-app/firebase-app";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "contexts/auth-context";
 import Authentication from "./Authentication";
@@ -55,9 +55,7 @@ const SignInPage = () => {
   const [togglePassword, setTogglePassword] = useState(false);
   const navigate = useNavigate();
   const { userInfo } = useAuth();
-
   console.log(userInfo);
-
   const {
     control,
     handleSubmit,
@@ -68,22 +66,8 @@ const SignInPage = () => {
   });
 
   useEffect(() => {
-    const arrErrors = Object.values(errors);
-    const lengthArrErrors = Object.values(errors).length;
-
-    if (lengthArrErrors > 0) {
-      toast.error(arrErrors[0]?.message, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  }, [errors]);
+    document.title = "Sign in page";
+  }, []);
 
   const handleSignIn = async (values) => {
     if (!isValid) return;
@@ -153,6 +137,9 @@ const SignInPage = () => {
             )}
           </Input>
         </Field>
+        <div className="have-account">
+          You had not an account ? <NavLink to={"/sign-up"}>Sign up</NavLink>{" "}
+        </div>
         <Button
           type="submit"
           style={{

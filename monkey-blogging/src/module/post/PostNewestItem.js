@@ -49,10 +49,9 @@ const PostNewestItemStyles = styled.div`
 const PostNewestItem = ({ data }) => {
   return (
     <PostNewestItemStyles>
-      <img
-        src="https://images.unsplash.com/photo-1673269595891-b92b2fa6edd8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+      <PostImage
+        url="https://images.unsplash.com/photo-1673269595891-b92b2fa6edd8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
         alt="unsplash"
-        className="post-image"
       />
 
       <div className="post-content">

@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const HomeBannerStyle = styled.div`
   margin-top: 44px;
+  margin-bottom: 60px;
   min-height: 520px;
   background-image: linear-gradient(
     to right bottom,

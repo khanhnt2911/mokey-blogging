@@ -15,6 +15,7 @@ import { auth, db } from "firebase-app/firebase-app";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import Authentication from "./Authentication";
+import InputPasswordToggle from "components/input/InputPasswordToggle";
 
 const schema = yup.object({
   fullname: yup.string().required("Enter your fullname"),
@@ -135,29 +136,7 @@ const SignUpPage = () => {
         </Field>
         <Field className="field">
           <Label htmlFor="password">Password</Label>
-          <Input
-            type={togglePassword ? "text" : "password"}
-            name="password"
-            placeholder="Enter your password"
-            control={control}
-            hasIcon
-          >
-            {togglePassword ? (
-              <IconEyeOpen
-                className="input-icon"
-                onClick={() => {
-                  setTogglePassword(!togglePassword);
-                }}
-              ></IconEyeOpen>
-            ) : (
-              <IconEyeClose
-                className="input-icon"
-                onClick={() => {
-                  setTogglePassword(!togglePassword);
-                }}
-              ></IconEyeClose>
-            )}
-          </Input>
+          <InputPasswordToggle control={control}></InputPasswordToggle>
         </Field>
         <div className="have-account">
           Do you have an account ? <NavLink to={"/sign-in"}>Sign in</NavLink>{" "}

@@ -14,6 +14,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "contexts/auth-context";
 import Authentication from "./Authentication";
+import InputPasswordToggle from "components/input/InputPasswordToggle";
 
 const SignInStyled = styled.div`
   min-height: 100vh;
@@ -112,29 +113,7 @@ const SignInPage = () => {
         </Field>
         <Field className="field">
           <Label htmlFor="password">Password</Label>
-          <Input
-            type={togglePassword ? "text" : "password"}
-            name="password"
-            control={control}
-            placeholder="Enter your password"
-            hasIcon
-          >
-            {togglePassword ? (
-              <IconEyeOpen
-                className="input-icon"
-                onClick={() => {
-                  setTogglePassword(!togglePassword);
-                }}
-              ></IconEyeOpen>
-            ) : (
-              <IconEyeClose
-                className="input-icon"
-                onClick={() => {
-                  setTogglePassword(!togglePassword);
-                }}
-              ></IconEyeClose>
-            )}
-          </Input>
+          <InputPasswordToggle control={control}></InputPasswordToggle>
         </Field>
         <div className="have-account">
           You had not an account ?{" "}

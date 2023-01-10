@@ -1,7 +1,7 @@
 import { Loading } from "components/loading";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const ButtonStyled = styled.button`
   cursor: pointer;
@@ -15,11 +15,23 @@ const ButtonStyled = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(
-    to right bottom,
-    ${(props) => props.theme.primary},
-    ${(props) => props.theme.secondary}
-  );
+  ${(props) =>
+    props.kind === "secondary" &&
+    css`
+      color: ${(props) => props.theme.primary};
+      background-color: white;
+    `};
+  ${(props) =>
+    props.kind === "primary" &&
+    css`
+      color: white;
+      background-image: linear-gradient(
+        to right bottom,
+        ${(props) => props.theme.primary},
+        ${(props) => props.theme.secondary}
+      );
+    `};
+
   &:disabled {
     opacity: 0.5;
     pointer-events: none;
@@ -32,6 +44,7 @@ const Button = (props) => {
     onClick = () => {},
     children,
     isLoading,
+    kind = "primary",
     to,
     ...rest
   } = props;
@@ -39,11 +52,17 @@ const Button = (props) => {
 
   if (to !== "" && typeof to === "string") {
     return (
-      <NavLink to={to}>
+      <NavLink
+        to={to}
+        style={{
+          display: "inline-block",
+        }}
+      >
         <ButtonStyled
           type={type}
           className={className}
           onClick={onClick}
+          kind={kind}
           {...rest}
         >
           {child}
@@ -53,7 +72,13 @@ const Button = (props) => {
   }
 
   return (
-    <ButtonStyled type={type} className={className} onClick={onClick} {...rest}>
+    <ButtonStyled
+      type={type}
+      kind={kind}
+      className={className}
+      onClick={onClick}
+      {...rest}
+    >
       {child}
     </ButtonStyled>
   );

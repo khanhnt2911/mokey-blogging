@@ -1,4 +1,4 @@
-import { auth } from "firebase-app/firebase-config";
+import { auth } from "firebase-app/firebase-app";
 import { signOut } from "firebase/auth";
 import React from "react";
 import { NavLink } from "react-router-dom";

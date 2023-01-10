@@ -25,7 +25,7 @@ const NotFoundPageStyle = styled.div`
   }
 `;
 
-const NotFoundPage = () => {
+const PageNotFound = () => {
   return (
     <NotFoundPageStyle>
       <NavLink to={"/"}>
@@ -39,4 +39,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default PageNotFound;

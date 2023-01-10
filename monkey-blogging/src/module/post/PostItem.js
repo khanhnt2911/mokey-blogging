@@ -37,7 +37,7 @@ const PostItemStyles = styled.div`
 const PostItem = ({ data }) => {
   return (
     <PostItemStyles>
-      <PostImage url={data.image} alt="" to={data.slug}></PostImage>
+      {/* <PostImage url={data.image} alt="" to={data.slug}></PostImage>
       <PostCategory to={data.category?.slug}>
         {data.category?.name}
       </PostCategory>
@@ -46,7 +46,7 @@ const PostItem = ({ data }) => {
         to={slugify(data.user?.username || "", { lower: true })}
         authorName={data.user?.fullname}
         date={formatDate}
-      ></PostMeta>
+      ></PostMeta> */}
     </PostItemStyles>
   );
 };

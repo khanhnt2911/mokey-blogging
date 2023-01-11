@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DashboardHeading from "module/dashboard/DashboardHeading";
 import { useForm } from "react-hook-form";
 import { Field, FieldCheckboxes } from "components/field";
@@ -11,27 +11,27 @@ import { Button } from "components/button";
 import { postStatus } from "utils/constants";
 import slugify from "slugify";
 
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-
-const storage = getStorage();
+import useFirebase from "hooks/useFirebase";
+import Toggle from "components/toggle/Toggle";
 
 const PostAddNew = () => {
-  const { control, watch, setValue, handleSubmit } = useForm({
+  const { control, watch, setValue, getValues, handleSubmit } = useForm({
     mode: "onChange",
     defaultValues: {
       status: "",
       title: "",
       slug: "",
       category: "",
+      hot: false,
     },
   });
   const watchStatus = watch("status");
   const watchCategory = watch("category");
+  const watchHot = watch("hot");
+  const { image, handleSelectImage, handleDeleteImage, progress } = useFirebase(
+    setValue,
+    getValues
+  );
 
   const addPostHandler = async (values) => {
     const cloneValues = { ...values };
@@ -40,47 +40,6 @@ const PostAddNew = () => {
     cloneValues.status = Number(cloneValues.status);
 
     // handleUploadImage(cloneValues.file);
-  };
-
-  const handleUploadImage = (file) => {
-    const storageRef = ref(storage, "images/" + file.name);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-          default:
-            console.log("Nothing at all");
-        }
-      },
-      (error) => {
-        console.log("Error", error);
-      },
-      () => {
-        // Upload completed successfully, now we can get the download URL
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
-        });
-      }
-    );
-  };
-
-  const onSelectImage = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setValue("image", file);
   };
 
   return (
@@ -111,7 +70,10 @@ const PostAddNew = () => {
             <Label>Image</Label>
             <ImageUpload
               className="h-[250px]"
-              onChange={onSelectImage}
+              onChange={handleSelectImage}
+              progress={progress}
+              image={image}
+              handleDeleteImage={handleDeleteImage}
             ></ImageUpload>
           </Field>
           <Field>
@@ -122,6 +84,12 @@ const PostAddNew = () => {
         <div className="form-layout">
           <Field>
             <Label>Feature post</Label>
+            <Toggle
+              on={watchHot === true}
+              onClick={() => {
+                setValue("hot", !watchHot);
+              }}
+            ></Toggle>
           </Field>
           <Field>
             <Label>Status</Label>

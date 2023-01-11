@@ -45,38 +45,6 @@ function App() {
               path="/manage/add-post"
               element={<PostAddNew></PostAddNew>}
             ></Route>
-            <Route
-              path="/manage/update-post"
-              element={<PostUpdate></PostUpdate>}
-            ></Route>
-            <Route
-              path="/manage/category"
-              element={<CategoryManage></CategoryManage>}
-            ></Route>
-            <Route
-              path="/manage/add-category"
-              element={<CategoryAddNew></CategoryAddNew>}
-            ></Route>
-            <Route
-              path="/manage/update-category"
-              element={<CategoryUpdate></CategoryUpdate>}
-            ></Route>
-            <Route
-              path="/manage/user"
-              element={<UserManage></UserManage>}
-            ></Route>
-            <Route
-              path="/manage/add-user"
-              element={<UserAddNew></UserAddNew>}
-            ></Route>
-            <Route
-              path="/manage/update-user"
-              element={<UserUpdate></UserUpdate>}
-            ></Route>
-            <Route
-              path="/profile"
-              element={<UserProfile></UserProfile>}
-            ></Route>
           </Route>
         </Routes>
       </AuthProvider>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DropdownProvider } from "./dropdown-context";
+import { DropdownProvider } from "./DropdownContext";
 
 const Dropdown = ({
   placeholder = "Please select an option",
